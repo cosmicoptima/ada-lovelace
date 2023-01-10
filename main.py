@@ -39,7 +39,13 @@ async def on_message(message):
             await message.channel.send('You are not Celeste <:threat:1058682393956978688>')
     elif message.content.startswith('!cp get '):
         user = message.mentions[0]
-        await message.channel.send(f'{user.mention} has {get_points(user)} CELESTE POINTS')
+        points = get_points(user)
+        if points < 0:
+            await message.channel.send(f'{user.mention} has {points} CELESTE POINTS <:owned:1062177746723278929>')
+        else:
+            await message.channel.send(f'{user.mention} has {points} CELESTE POINTS')
+    elif message.content == "!cp help":
+        await message.channel.send("There is no he;lp for you")
     elif message.content.startswith('!cp '):
         await message.channel.send(f'What')
 
