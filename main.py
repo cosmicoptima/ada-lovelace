@@ -28,7 +28,12 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.content.startswith('!cp give '):
+    if message.content == "!celeste pet":
+        user = message.mentions[0]
+
+        await give_points(user, 1.0)
+        await message.channel.send(f':3')
+    elif message.content.startswith('!cp give '):
         if message.author.id == CELESTE:
             user = message.mentions[0]
             amount = int(message.content.split(' ')[-1])
@@ -53,7 +58,8 @@ async def on_message(message):
 async def render_leaderboard():
     # returns code block with leaderboard
     sorted_points = sorted(table, key=lambda x: x['points'], reverse=True)
-    body = '\n'.join([f'{client.get_user(row["user_id"]).name}: {row["points"]}' for row in sorted_points])
+    body = '\n'.join(
+        [f'{client.get_user(row["user_id"]).name}: {row["points"]}' for row in sorted_points])
     return f'```\n{body}```'
 
 
@@ -79,7 +85,6 @@ def get_points(user):
         current = current['points']
 
     return current
-
 
 
 client.run(environ['DISCORD_BOT_TOKEN'])
