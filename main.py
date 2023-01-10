@@ -34,12 +34,12 @@ async def on_message(message):
             amount = int(message.content.split(' ')[-1])
 
             await give_points(user, amount)
-            await message.channel.send(f'Gave {user.mention} {amount} points. Current points: {get_points(user)}.')
+            await message.channel.send(f'gave {user.mention} {amount} CELESTE POINTS. current CELESRE POINTS: {get_points(user)}.')
         else:
             await message.channel.send('You are not Celeste <:threat:1058682393956978688>')
     elif message.content.startswith('!cp get '):
         user = message.mentions[0]
-        await message.channel.send(f'{user.mention} has {get_points(user)} points.')
+        await message.channel.send(f'{user.mention} has {get_points(user)} CELESTE POINTS')
     elif message.content.startswith('!cp '):
         await message.channel.send(f'What')
 
@@ -66,9 +66,11 @@ async def give_points(user, amount):
 
 
 def get_points(user):
-    current = table.find_one(user_id=user.id)['points']
+    current = table.find_one(user_id=user.id)
     if current is None:
         current = 0
+    else:
+        current = current['points']
 
     return current
 
