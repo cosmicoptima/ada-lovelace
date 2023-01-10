@@ -64,11 +64,9 @@ async def on_message(message):
 
 
 async def render_leaderboard():
-    # returns code block with leaderboard
     sorted_points = sorted(table, key=lambda x: x['points'], reverse=True)
-    body = '\n'.join(
-        [f'{client.get_user(row["user_id"]).name}: {row["points"]}' for row in sorted_points])
-    return f'```\n{body}```'
+    # returns a code block with two columns, points and user; padded
+    return '```\n' + '\n'.join([f'{row["points"]:>8} {client.get_user(row["user_id"]).name}' for row in sorted_points]) + '```'
 
 
 async def give_points(user, amount):
