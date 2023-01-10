@@ -54,6 +54,14 @@ async def on_message(message):
     elif message.content.startswith('!cp '):
         await message.channel.send(f'What')
 
+    # +1 for petting celeste
+    elif message.content == "!celeste pet":
+        if message.author.id == CELESTE:
+            await message.channel.send("that is pathetic")
+        elif message.channel.type != discord.ChannelType.private:
+            await give_points(message.author, 1)
+            await message.channel.send(f':3  {message.author.mention} has {get_points(message.author)} CEGKESTE POINTS')
+
 
 async def render_leaderboard():
     # returns code block with leaderboard
