@@ -29,7 +29,7 @@ async def interpret_queste_command(message) -> None:
 
 
 async def add_queste(message) -> None:
-    args = message.content.split()[2:]
+    args = message.content.split()[3:]
     if len(args) == 2:
         table.insert(
             dict(title=args[0], description=None, bounty=float(args[1])))
@@ -48,14 +48,15 @@ async def add_queste(message) -> None:
 
 
 async def remove_queste(message) -> None:
-    if len(message.content.split() != 4):
+    args = message.content.split()[3:]
+    if len(args) != 1:
         if random() > 0.5:
-            await message.channel.send(f'Expected 1 argument, recieved {len(message.content.split())}')
+            await message.channel.send(f'Expected 1 argument, recieved {len(args)}')
             await message.channel.send(f'Usage: !cp quest remove <title>')
         else:
             await message.channel.send(f'idiiot')
     else:
-        title = message.content.split()[3]
+        title = args[0]
         quest = table.find_one(title)
         if quest == None:
             await message.channel.send(f'Removed nonexistend cequeste "{title}"')
@@ -65,4 +66,13 @@ async def remove_queste(message) -> None:
 
 
 async def fulfill_queste(message) -> None:
-    # todo
+    args = message.content.split()[3:]
+    if len(args) != 2:
+        if random() > 0.5:
+            await message.channel.send(f'Expected 2 arguments, recieved {len(args)}')
+            await message.channel.send(f'Usage: !cp quest fulfill <title> <user>')
+        else:
+            await message.channel.send(f'why did you thnk that would work')
+    else:
+        title = args[0]
+        user = args[1]
