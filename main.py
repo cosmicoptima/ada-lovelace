@@ -1,23 +1,6 @@
-import dataset
 import discord
-from dotenv import load_dotenv
-from os import environ
-
-load_dotenv()
-
-intents = discord.Intents.default()
-intents.members = True
-intents.message_content = True
-
-client = discord.Client(intents=intents)
-
-db = dataset.connect('sqlite:///data.db')
+from common import CELESTE, DISCORD_BOT_TOKEN, SPECIFIC_CHANNEL, LEADERBOARD_CHANNEL, LEADERBOARD_POST, db, client
 table = db['points']
-
-CELESTE = 140541286498304000
-LEADERBOARD_CHANNEL = 1062244958477750344
-LEADERBOARD_POST = 1062245394152685618
-SPECIFIC_CHANNEL = 1039267300412493856
 
 
 @client.event
@@ -28,12 +11,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.content == "!celeste pet":
-        user = message.mentions[0]
-
-        await give_points(user, 1.0)
-        await message.channel.send(f':3')
-    elif message.content.startswith('!cp give '):
+    if message.content.startswith('!cp give '):
         if message.author.id == CELESTE:
             user = message.mentions[0]
             amount = int(message.content.split(' ')[-1])
@@ -51,6 +29,9 @@ async def on_message(message):
             await message.channel.send(f'{user.mention} has {points} CELESTE POINTS')
     elif message.content == "!cp help":
         await message.channel.send("There is no he;lp for you")
+    elif message.content.startswith('!cp quest'):
+        from cequests import interpret_queste_command
+        await interpret_queste_command(message)
     elif message.content.startswith('!cp '):
         await message.channel.send(f'What')
 
