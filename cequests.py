@@ -38,7 +38,7 @@ async def add_queste(message) -> None:
 
 
 def parse_add_queste_args(message) -> List[str] | None:
-    pattern = r'\!cp quest add "([^"]+)" ("([^"]+)" )?(\d+\.?\d+)'
+    pattern = r'\!cp quest add "([^"]+)" ("([^"]+)" )?(\d+\.?\d*)'
     args = re.match(pattern, message.content)
     if args == None:
         return None
