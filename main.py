@@ -74,4 +74,4 @@ def get_points(user):
     return current
 
 
-client.run(environ['DISCORD_BOT_TOKEN'])
+client.run(DISCORD_BOT_TOKEN)
