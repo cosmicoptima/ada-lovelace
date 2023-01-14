@@ -11,6 +11,7 @@ db = dataset.connect('sqlite:///data.db')
 
 DISCORD_BOT_TOKEN = environ['DISCORD_BOT_TOKEN']
 CELESTE = int(environ['CELESTE'])
+IAN = 748577964311969923
 LEADERBOARD_CHANNEL = int(environ['LEADERBOARD_CHANNEL'])
 LEADERBOARD_POST = int(environ['LEADERBOARD_POST'])
 SPECIFIC_CHANNEL = int(environ['SPECIFIC_CHANNEL'])
