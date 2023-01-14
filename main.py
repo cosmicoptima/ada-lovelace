@@ -1,4 +1,4 @@
-from cequests import interpret_queste_command
+from cequesting import interpret_quest_command
 from common import *
 
 import discord
@@ -25,7 +25,7 @@ async def on_message(message):
             await poast(message.channel, 'you are not celeste <:threat:1058682393956978688>')
 
     elif message.content.startswith('ada get '):
-        user = message.mentions[0]
+       user = message.mentions[0]
         points = get_points(user)
         if points < 0:
             await poast(message.channel, f'{user.mention} has {points}CP <:owned:1062177746723278929>')
@@ -36,7 +36,7 @@ async def on_message(message):
         await poast(message.channel, "there is no he;lp for you")
 
     elif message.content.startswith('ada quest '):
-        await interpret_queste_command(message)
+        await interpret_quest_command(message)
 
     elif message.content.startswith('ada '):
         await poast(message.channel, f'What')
