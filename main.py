@@ -14,7 +14,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.author == IAN:
+    if message.author.id == IAN:
         return
 
     if message.content.startswith('ada give '):
