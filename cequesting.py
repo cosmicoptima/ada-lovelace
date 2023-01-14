@@ -27,18 +27,18 @@ async def add_quest(message):
     if args == None:
         # random chance to be helpful
         if random.random() > 0.5:
-            await poast(f'Usage: ada quest add "<title>" "[description]" <amount>')
-            await poast(f'Don\'t forget the quotes!')
+            await poast(message.channel, f'Usage: ada quest add "<title>" "[description]" <amount>')
+            await poast(message.channel, f'Don\'t forget the quotes!')
         else:
-            await poast(f'dumbass')
+            await poast(message.channel, f'dumbass')
     elif len(args) == 2:
         quests.insert(
             dict(title=args[0], description=None, bounty=float(args[1])))
-        await poast(f'CEQUESTE ESTABLIMSHED: {args[0]}')
+        await poast(message.channel, f'CEQUESTE ESTABLIMSHED: {args[0]}')
     else:
         quests.insert(
             dict(title=args[0], description=args[1], bounty=float(args[2])))
-        await poast(f'CEQUESTE ESTABLIMSHED: {args[0]}')
+        await poast(message.channel, f'CEQUESTE ESTABLIMSHED: {args[0]}')
 
 
 def parse_add_quest_args(message) -> List[str] | None:
@@ -56,17 +56,17 @@ async def remove_quest(message):
     title = parse_remove_quest_args(message)
     if title == None:
         if random.random() > 0.5:
-            await poast(f'Usage: ada quest remove "<title>"')
-            await poast(f'Don\'t forget the quotes!')
+            await poast(message.channel, f'Usage: ada quest remove "<title>"')
+            await poast(message.channel, f'Don\'t forget the quotes!')
         else:
-            await poast(f'idiiot')
+            await poast(message.channel, f'idiiot')
     else:
         quest = quests.find_one(title=title)
         if quest == None:
-            await poast(f'Removed nonexistend cequeste "{title}"')
+            await poast(message.channel, f'Removed nonexistend cequeste "{title}"')
         else:
             quests.delete(title=title)
-            await poast(f'Removed cequeste "{title}"')
+            await poast(message.channel, f'Removed cequeste "{title}"')
 
 
 def parse_remove_quest_args(message) -> str | None:
@@ -82,10 +82,10 @@ async def fulfill_quest(message):
     args = parse_fulfill_quest_args(message)
     if args == None:
         if random.random() > 0.5:
-            await poast(f'Usage: ada quest fulfill "<title>" @<user>')
-            await poast(f'Don\'t forget the quotes!')
+            await poast(message.channel, f'Usage: ada quest fulfill "<title>" @<user>')
+            await poast(message.channel, f'Don\'t forget the quotes!')
         else:
-            await poast(f'why did you thnk that would work')
+            await poast(message.channel, f'why did you thnk that would work')
     else:
         title = args[0]
         user = args[1]
@@ -95,12 +95,12 @@ async def fulfill_quest(message):
         else:
             user_row = points.find_one(user_id=user.id)
             if user_row == None:
-                await poast(f'That user dosent even exist lol')
+                await poast(message.channel, f'That user dosent even exist lol')
             else:
                 bounty = quest['bounty']
                 quests.delete(title=title)
                 await give_points(user, float(quest['bounty']))
-                await poast(f'Rewarded {user.name} {bounty}CP for completing quest "{title}"')
+                await poast(message.channel, f'Rewarded {user.name} {bounty}CP for completing quest "{title}"')
 
 
 def parse_fulfill_quest_args(message) -> Tuple[str, discord.User] | None:
