@@ -10,6 +10,7 @@ python = "^3.10"
 "discord.py" = "^2.1.0"
 dataset = "^1.5.2"
 python-dotenv = "^0.21.0"
+emoji-list = "^0.50"
 
 [build-system]
 requires = ["poetry-core"]

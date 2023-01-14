@@ -1,10 +1,13 @@
 import dataset
 import discord
-from os import environ
 from dotenv import load_dotenv
-db = dataset.connect('sqlite:///data.db')
+from emoji_list import all_emoji
+from os import environ
+import random
 
 load_dotenv()
+
+db = dataset.connect('sqlite:///data.db')
 
 DISCORD_BOT_TOKEN = environ['DISCORD_BOT_TOKEN']
 CELESTE = int(environ['CELESTE'])
@@ -22,10 +25,7 @@ client = discord.Client(intents=intents)
 
 async def give_points(user, amount):
     current = db['points'].find_one(user_id=user.id)
-    if current is None:
-        current = 0
-    else:
-        current = current['points']
+    current = 0 if current is None else current['points']
 
     db['points'].upsert(
         {'user_id': user.id, 'points': current + amount}, ['user_id'])
@@ -36,7 +36,11 @@ async def give_points(user, amount):
 
 
 async def render_leaderboard():
-    sorted_points = sorted(
-        db['points'], key=lambda x: x['points'], reverse=True)
-    # returns a code block with two columns, points and user; padded
+    sorted_points = sorted(db['points'], key=lambda x: x['points'], reverse=True)
     return '```\n' + '\n'.join([f'{row["points"]:>8} {client.get_user(row["user_id"]).name}' for row in sorted_points]) + '```'
+
+
+async def poast(channel, message):
+    prefix = ''.join(random.choices(all_emoji, k=random.randint(2, 3)))
+    suffix = ''.join(random.choices(all_emoji, k=random.randint(2, 3)))
+    await channel.send(f'{prefix} {message} {suffix}')

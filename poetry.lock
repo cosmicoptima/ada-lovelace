@@ -246,6 +246,18 @@ test = ["coverage[toml]", "pytest", "pytest-asyncio", "pytest-cov", "pytest-mock
 voice = ["PyNaCl (>=1.3.0,<1.6)"]
 
 [[package]]
+name = "emoji-list"
+version = "0.50"
+description = "Raw lists of emoji by type, stripped so you don't have to"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "emoji-list-0.50.tar.gz", hash = "sha256:c571ac77b500774a021f6e67aa6bddd5a77fb53feb99f9ce85011ff74efa2a2c"},
+    {file = "emoji_list-0.50-py2.py3-none-any.whl", hash = "sha256:ca6979f5106f1b2693195a4d7ab2add446885290777916a03c2303e7c117e4a9"},
+]
+
+[[package]]
 name = "frozenlist"
 version = "1.3.3"
 description = "A list-like structure which implements collections.abc.MutableSequence"
@@ -750,4 +762,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "30a7ca1357a9abaa754063ab8c1acb5f30d6183522f66106d1aed77378456c3a"
+content-hash = "49efcce47f28e44664506f429a0fcd08d35084c19f49f52447094b0b564e6bee"

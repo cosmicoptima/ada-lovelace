@@ -1,5 +1,8 @@
+from cequests import interpret_queste_command
+from common import *
+
 import discord
-from common import CELESTE, DISCORD_BOT_TOKEN, SPECIFIC_CHANNEL, LEADERBOARD_CHANNEL, LEADERBOARD_POST, db, client
+
 table = db['points']
 
 
@@ -11,65 +14,45 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.content.startswith('!cp give '):
+    if message.content.startswith('ada give '):
         if message.author.id == CELESTE:
             user = message.mentions[0]
             amount = int(message.content.split(' ')[-1])
 
             await give_points(user, amount)
-            await message.channel.send(f'gave {user.mention} {amount} CELESTE POINTS. current CELESRE POINTS: {get_points(user)}.')
+            await poast(message.channel, f'gave {user.mention} {amount}CP. current CP: {get_points(user)}')
         else:
-            await message.channel.send('You are not Celeste <:threat:1058682393956978688>')
-    elif message.content.startswith('!cp get '):
+            await poast(message.channel, 'you are not celeste <:threat:1058682393956978688>')
+
+    elif message.content.startswith('ada get '):
         user = message.mentions[0]
         points = get_points(user)
         if points < 0:
-            await message.channel.send(f'{user.mention} has {points} CELESTE POINTS <:owned:1062177746723278929>')
+            await poast(message.channel, f'{user.mention} has {points}CP <:owned:1062177746723278929>')
         else:
-            await message.channel.send(f'{user.mention} has {points} CELESTE POINTS')
-    elif message.content == "!cp help":
-        await message.channel.send("There is no he;lp for you")
-    elif message.content.startswith('!cp quest'):
-        from cequests import interpret_queste_command
+            await poast(message.channel, f'{user.mention} has {points}CP')
+
+    elif message.content == "ada help":
+        await poast(message.channel, "there is no he;lp for you")
+
+    elif message.content.startswith('ada quest '):
         await interpret_queste_command(message)
-    elif message.content.startswith('!cp '):
-        await message.channel.send(f'What')
+
+    elif message.content.startswith('ada '):
+        await poast(message.channel, f'What')
 
     # +1 for petting celeste
     elif message.content == "!celeste pet":
         if message.author.id == CELESTE:
-            await message.channel.send("that is pathetic")
+            await poast(message.channel, "that is pathetic")
         elif message.channel.type != discord.ChannelType.private:
             await give_points(message.author, 1)
-            await message.channel.send(f':3  {message.author.mention} has {get_points(message.author)} CEGKESTE POINTS')
-
-
-async def render_leaderboard():
-    sorted_points = sorted(table, key=lambda x: x['points'], reverse=True)
-    # returns a code block with two columns, points and user; padded
-    return '```\n' + '\n'.join([f'{row["points"]:>8} {client.get_user(row["user_id"]).name}' for row in sorted_points]) + '```'
-
-
-async def give_points(user, amount):
-    current = table.find_one(user_id=user.id)
-    if current is None:
-        current = 0
-    else:
-        current = current['points']
-
-    table.upsert({'user_id': user.id, 'points': current + amount}, ['user_id'])
-
-    channel = client.get_channel(LEADERBOARD_CHANNEL)
-    post = await channel.fetch_message(LEADERBOARD_POST)
-    await post.edit(content=await render_leaderboard())
+            await poast(message.channel, f':3  {message.author.mention} has {get_points(message.author)}CP')
 
 
 def get_points(user):
     current = table.find_one(user_id=user.id)
-    if current is None:
-        current = 0
-    else:
-        current = current['points']
+    current = 0 if current is None else current['points']
 
     return current
 
