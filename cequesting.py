@@ -1,3 +1,5 @@
+# TODO fix
+
 from common import *
 
 import discord
@@ -17,7 +19,7 @@ async def interpret_quest_command(message):
     elif message.content.startswith('ada quest fulfill'):
         await fulfill_quest(message)
 
-    await update_questelog()
+    await update_questlog()
 
 
 async def add_quest(message):
@@ -98,7 +100,7 @@ async def fulfill_quest(message):
                 bounty = quest['bounty']
                 quests.delete(title=title)
                 await give_points(user, float(quest['bounty']))
-                await poast(f'Rewarded {user.name} {bounty} CESTESLER POINTS for completing quest "{title}"')
+                await poast(f'Rewarded {user.name} {bounty}CP for completing quest "{title}"')
 
 
 def parse_fulfill_quest_args(message) -> Tuple[str, discord.User] | None:
@@ -111,16 +113,16 @@ def parse_fulfill_quest_args(message) -> Tuple[str, discord.User] | None:
 
 
 def stringify_quest(quest) -> str:
-    title = quest['title']
-    description = quest['description'] or 'A mysterious quest'
-    bounty = quest['bounty']
-    return f'{title}\n{description}\nBounty: {bounty} Clsetere Points'
+    if 'description' in quest:
+        return f'{quest["title"]} - {quest["description"]} - {quest["bounty"]}CP'
+    else:
+        return f'{quest["title"]} - {quest["bounty"]}CP'
 
 
 async def update_questlog():
     quests = quests.all()
     quest_lines = [stringify_quest(quest) for quest in quests]
-    message = '```\n' + 'Cequeste Log\n' + '\n'.join(quest_lines) + '\n```'
+    message = '```\n' + 'CEQUESTES\n\n' + '\n'.join(quest_lines) + '\n```'
     channel = client.get_channel(LEADERBOARD_CHANNEL)
     post = await channel.fetch_message(QUESTLOG_POST)
     await post.edit(content=message)
