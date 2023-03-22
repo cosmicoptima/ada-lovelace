@@ -3,7 +3,7 @@ from common import *
 import discord
 
 table = db['points']
-quests_table = db['quests']
+quests_table = db['quests___x3']
 
 
 @client.event
